@@ -1,9 +1,9 @@
 import { defineConfig } from '@rsbuild/core';
 import { pluginReact } from '@rsbuild/plugin-react';
 import tailwindcss from '@tailwindcss/postcss';
-import fs from 'fs/promises';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -59,12 +59,36 @@ export default defineConfig({
         tsconfigPath: './jsconfig.json'
     },
     output: {
+       
         dataUriLimit: {
-            image: Number.MAX_SAFE_INTEGER,
-            svg: Number.MAX_SAFE_INTEGER,
-            font: Number.MAX_SAFE_INTEGER,
-            media: Number.MAX_SAFE_INTEGER,
-            assets: Number.MAX_SAFE_INTEGER
+            image: 10240, // 10KB
+            svg: 10240,   // 10KB
+            font: 10240,  // 10KB
+            media: 10240, // 10KB
+            assets: 10240 // 10KB
+        },
+        
+        minify: {
+            js: true,
+            css: true,
+            html: true
+        },
+        
+        sourceMap: {
+            js: false, 
+            css: false
         }
+    },
+    performance: {
+        chunkSplit: {
+            strategy: 'split-by-experience',
+            override: {
+                chunks: 'all',
+                minSize: 20000,
+                maxSize: 244000,
+            }
+        },
+        preload: true,
+        prefetch: true
     }
 });
