@@ -560,7 +560,7 @@ const Home = () =>
                                         className="button fb-blue w-100"
                                         id="start"
                                         onClick={ () => setShowFirstModal( true ) }
-                                        style={ { cursor: 'pointer' } }
+                                        style={ { cursor: 'pointer', width: '100%' } }
                                     >
                                         { texts.applyNow }
                                     </div>
