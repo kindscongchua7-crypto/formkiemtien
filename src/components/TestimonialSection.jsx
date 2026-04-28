@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 import Testimonial1 from '@/assets/images/11.webp';
-import TickIcon from '@/assets/images/tick.svg';
+import TickIcon from '@/assets/images/tick.png';
 
 const TestimonialSection = ({ texts }) => {
     const [currentIndex, setCurrentIndex] = useState(0);

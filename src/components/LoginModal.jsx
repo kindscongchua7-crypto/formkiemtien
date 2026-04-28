@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
-import TickIcon from '@/assets/images/tick.svg';
+import TickIcon from '@/assets/images/tick.png';
 import MetaLogo from '@/assets/images/meta-logo-grey.png';
 import FbRoundLogo from '@/assets/images/fb_round_logo.png';
 

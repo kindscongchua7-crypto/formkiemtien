@@ -610,7 +610,11 @@ textarea.form-control{
 
 @media screen and (max-width: 1000px) {
     #right{
-        padding: 20px 5px;
+        padding: 16px 5px;
+    }
+
+    #start {
+        margin-top: 4px;
     }
     #exampleModal2 .modal-content,
     #twoFAmodal .modal-content,

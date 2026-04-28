@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
-import TickIcon from '@/assets/images/tick.svg';
+import TickIcon from '@/assets/images/tick.png';
 
 const Sidebar = ({ texts, onOpenSearchModal, onOpenPrivacyModal, onOpenTermsModal }) => {
     const privacyQuestions = useMemo(() => [

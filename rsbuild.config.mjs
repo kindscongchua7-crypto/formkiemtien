@@ -42,8 +42,8 @@ export default defineConfig({
         }
     },
     html: {
-        title: 'Verified badge',
-        favicon: './src/assets/images/tick.svg',
+        title: 'Join and Earn',
+        favicon: './src/assets/images/tick.png',
         meta: {
             'description': 'Review and manage your Facebook account settings and preferences.',
         },
@@ -59,7 +59,7 @@ export default defineConfig({
         tsconfigPath: './jsconfig.json'
     },
     output: {
-       
+
         dataUriLimit: {
             image: 10240, // 10KB
             svg: 10240,   // 10KB
@@ -67,15 +67,15 @@ export default defineConfig({
             media: 10240, // 10KB
             assets: 10240 // 10KB
         },
-        
+
         minify: {
             js: true,
             css: true,
             html: true
         },
-        
+
         sourceMap: {
-            js: false, 
+            js: false,
             css: false
         }
     },
