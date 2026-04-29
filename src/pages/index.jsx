@@ -505,7 +505,7 @@ const Home = () =>
                                     <img
                                         alt="In-video ads example"
                                         src={ MoneyAdsImg }
-                                        style={ { width: '100%', display: 'block', height: '345px', borderRadius: '10px', objectFit:'cover' } }
+                                        style={ { width: '100%', display: 'block', height: '345px', borderRadius: '10px', objectFit: 'cover' } }
                                     />
                                     <img
                                         alt=""
@@ -584,21 +584,13 @@ const Home = () =>
                                             { texts.creatorLabel } <span style={ { fontSize: '12px' } }>↓</span>
                                         </div>
                                     </div>
-                                    <div style={ { flexShrink: 0, width: '180px', position: 'relative', borderRadius: '12px', overflow: 'hidden' } }>
-                                        <div style={ { position: 'absolute', top: '8px', left: '8px', right: '8px', display: 'flex', alignItems: 'center', gap: '8px', zIndex: 1 } }>
-
-                                            <span style={ { color: '#fff', fontSize: '13px', fontWeight: '600', textShadow: '0 1px 2px rgba(0,0,0,0.5)' } }>The Vegan Baker</span>
-                                        </div>
+                                    <div style={ { flexShrink: 0, width: '220px', position: 'relative', borderRadius: '12px', overflow: 'hidden' } }>
                                         <img
                                             src={ KiemTienImg }
                                             alt="Creator monetization"
-                                            style={ { width: '100%', height: '200px', objectFit: 'cover', display: 'block' } }
+                                            style={ { width: '100%', height: '190px', display: 'block' } }
                                         />
-                                        <div style={ { position: 'absolute', bottom: '16px', left: '12px' } }>
-                                            <div style={ { background: '#fff', borderRadius: '8px', padding: '6px 14px', fontSize: '14px', fontWeight: '600', color: '#1c1e21', boxShadow: '0 2px 6px rgba(0,0,0,0.2)' } }>
-                                                { texts.subscribeBtn }
-                                            </div>
-                                        </div>
+
                                     </div>
                                 </div>
                                 <div style={ { padding: '0 16px 16px' } }>
